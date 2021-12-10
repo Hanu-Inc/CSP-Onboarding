@@ -1,0 +1,3 @@
+﻿Login-AzureRmAccount
+Select-AzureRmSubscription -SubscriptionID <Subscription ID>
+New-AzureRmRoleAssignment -ObjectId faa7e442-7a39-4e8d-aaba-fe6e3815f86d -RoleDefinitionName "Owner" -Scope "/subscriptions/<Subscription ID>"

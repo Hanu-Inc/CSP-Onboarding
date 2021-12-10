@@ -1,0 +1,37 @@
+
+# Sets the execution policy on the local system to unrestricted
+Set-ExecutionPolicy –Scope CurrentUser Unrestricted -Force
+
+#Installs the required module on the local machine
+Install-Module -Name PowerShellGet -Repository PSGallery -Force
+Install-Module -Name AzureRM.ManagementPartner -Force
+Import-Module AzureRM.ManagementPartner
+
+# Requests for azure credentials from the user on a pop up window
+$me = Login-AzureRmAccount
+
+#Sets the lists of all azure subscriptions into the variable
+$subs = Get-AzureRmSubscription
+
+#Sets the Hanu Partner ID as the management partner on all the azure subscriptions one by one
+foreach ($sub in $subs)
+{
+Select-AzureRmSubscription -SubscriptionId $sub.subscriptionid
+$partner = Get-AzureRmManagementPartner 
+if (!$partner)
+{
+New-AzureRmManagementPartner -PartnerId 831750
+}
+else
+{
+Update-AzureRmManagementPartner -PartnerId 831750
+}
+}
+
+#provides output if the partner id has been added on the subscription
+foreach ($sub in $subs)
+{
+Select-AzureRmSubscription -SubscriptionId $sub.subscriptionid
+$partner = Get-AzureRmManagementPartner 
+$partner
+}
